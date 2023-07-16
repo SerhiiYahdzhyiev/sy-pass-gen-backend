@@ -11,6 +11,7 @@ class TestGenerator(TestCase):
         lowercase_pattern = r"^([a-z]){12}"
         uppercase_pattern = r"^([A-Z]){12}"
         digit_pattern = r"^\d{12}"
+        symbol_pattern = r"^([\(\)\[\]\{\}\;\:\-\_\/\\?\+\*\#\=\&\%\@\|])"
 
         lowercase_suggestion = generate(
                     12,
@@ -41,6 +42,16 @@ class TestGenerator(TestCase):
                 )
         
         self.assertTrue(re.match(digit_pattern, digit_suggestion))
+
+        symbol_suggestion = generate(
+                    12,
+                    False,
+                    False,
+                    False,
+                    True,
+                )
+
+        self.assertTrue(re.match(symbol_pattern, symbol_suggestion))
 
         length_test = generate(10)
 
