@@ -1,10 +1,13 @@
 import random
+from logging import getLogger
 
+error_logger = getLogger("error")
 
 uppercase_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 lowercase_chars = uppercase_chars.lower()
 digits_chars = "0123456789"
-symbols = "()[]{},;:.-_/\\?+*#=&%@|"
+symbols = "()[]{};:-_/\\?+*#=&%@|"
+
 
 class PasswordGenerationException(Exception):
     """Custom exception class for password generation"""
@@ -36,7 +39,9 @@ def _assemble_population(
         population += symbols
 
     if len(population) == 0:
-        raise PasswordGenerationException("Cannot generate password from empty set of possible characters!")
+        exception = PasswordGenerationException("Cannot generate password from empty set of possible characters!")  
+        error_logger.error(exception)
+        raise exception
 
     return population
     
@@ -51,7 +56,9 @@ def generate(
     """This function generates a password suggestion based on the input parameters"""
     
     if length <= 0:
-        raise PasswordGenerationException("Cannot generate password with 0 or negative length!")
+        exception = PasswordGenerationException("Cannot generate password with 0 or negative length!")
+        error_logger.error(exception)
+        raise exception
 
     population = _assemble_population(
             lowercase,
